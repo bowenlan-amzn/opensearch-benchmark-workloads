@@ -15,9 +15,6 @@
     "index.number_of_replicas": {{number_of_replicas | default(1)}},
     "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
     "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
-    {% if distribution_version.split('.') | map('int') | list  >= "2.11.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
-      "index.merge.policy": "{{index_merge_policy | default('log_byte_size') }}",
-    {% endif %}
     "index.codec": "best_compression",
     "index.translog.sync_interval": "30s",
     "index.translog.durability": {{index_translog_durability | default("async") | tojson}},
