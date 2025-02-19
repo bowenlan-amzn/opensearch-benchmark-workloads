@@ -41,15 +41,6 @@
 	  }
 	},
 	{
-	  "match_message": {
-	    "match": "message",
-	    "match_mapping_type": "string",
-	    "mapping": {
-	      "type": "{{ match_only_text }}"
-	    }
-	  }
-	},
-	{
 	  "strings_as_keyword": {
 	    "match_mapping_type": "string",
 	    "mapping": {
@@ -201,7 +192,12 @@
         }
       },
       "message": {
-        "type": "{{ match_only_text }}"
+        "type": "match_only_text",
+        "fields": {
+          "text_field": { 
+            "type":  "text"
+          }
+        }
       },
       "meta": {
         "type": "object",
