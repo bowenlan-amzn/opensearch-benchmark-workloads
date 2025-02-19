@@ -11,4 +11,11 @@
   "schedule": [
     {{ benchmark.collect(parts="common/test-schedule.json") }}
   ]
+},
+{
+  "name": "setup",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="common/setup-schedule.json") }}
+  ]
 }
