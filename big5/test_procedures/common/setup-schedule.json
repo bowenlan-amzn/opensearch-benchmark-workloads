@@ -1,0 +1,1 @@
+{{ benchmark.collect(parts="../../../common_operations/workload_setup.json") }}
