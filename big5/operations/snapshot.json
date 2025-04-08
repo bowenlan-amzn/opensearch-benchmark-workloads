@@ -1,0 +1,56 @@
+{
+    "name": "create-snapshot-repository",
+    "operation-type": "create-snapshot-repository",
+    "repository": "{{ snapshot_repository_name | default('benchmark-repository') }}",
+    "body": {
+        "type": "s3",
+        "settings": {
+            "bucket": "bowensnapshots",
+            "base_path": "subagg_3_0_0"
+        }
+    }
+},
+{
+    "name": "delete-snapshot",
+    "operation-type": "delete-snapshot",
+    "repository": "{{ snapshot_repository_name | default('benchmark-repository') }}",
+    "snapshot": "{{ snapshot_name | default('benchmark-snapshot') }}"
+  },
+{
+    "name": "create-snapshot",
+    "operation-type": "create-snapshot",
+    "repository": "{{ snapshot_repository_name | default('benchmark-repository') }}",
+    "snapshot": "{{ snapshot_name | default('benchmark-snapshot') }}",
+    "body": {
+        "indices": [
+            "big5"
+        ],
+        "include_global_state": false,
+        "partial": false
+    }
+},
+{
+    "name": "wait-for-snapshot-creation",
+    "operation-type": "wait-for-snapshot-create",
+    "repository": "{{ snapshot_repository_name | default('benchmark-repository') }}",
+    "snapshot": "{{ snapshot_name | default('benchmark-snapshot') }}",
+    "completion-recheck-wait-period": 30
+},
+{
+    "name": "disable-filter-rewrite",
+    "operation-type": "put-settings",
+    "body": {
+      "transient" : {
+          "search.max_aggregation_rewrite_filters" : 0
+      }
+    }
+  },
+  {
+    "name": "enable-filter-rewrite",
+    "operation-type": "put-settings",
+    "body": {
+      "transient" : {
+          "search.max_aggregation_rewrite_filters" : 20000
+      }
+    }
+  }

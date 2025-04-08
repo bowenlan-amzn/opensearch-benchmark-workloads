@@ -1,0 +1,45 @@
+{
+    "operation": "range-auto-date-histo",
+    "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+    "iterations": {{ test_iterations | default(100) | tojson }},
+    "target-throughput": {{ target_throughput | default(2) | tojson }},
+    "clients": {{ search_clients | default(1) }}
+  },
+  {
+    "operation": "range-auto-date-histo-with-metrics",
+    "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+    "iterations": {{ test_iterations | default(100) | tojson }},
+    "target-throughput": {{ target_throughput | default(2) | tojson }},
+    "clients": {{ search_clients | default(1) }}
+  },
+  {
+    "operation": "disable-filter-rewrite"
+  },
+  {
+    "name": "range-auto-date-histo-disable-optimization",
+    "operation": "range-auto-date-histo",
+    "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+    "iterations": {{ test_iterations | default(100) | tojson }},
+    "target-throughput": {{ target_throughput | default(2) | tojson }},
+    "clients": {{ search_clients | default(1) }}
+  },
+  {
+    "name": "range-auto-date-histo-with-metrics-disable-optimization",
+    "operation": "range-auto-date-histo-with-metrics",
+    "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+    "iterations": {{ test_iterations | default(100) | tojson }},
+    "target-throughput": {{ target_throughput | default(2) | tojson }},
+    "clients": {{ search_clients | default(1) }}
+  },
+  {
+    "operation": "enable-filter-rewrite"
+  },
+  {
+    "operation": "create-snapshot-repository"
+  },
+  {
+    "operation": "create-snapshot"
+  },
+  {
+    "operation": "wait-for-snapshot-creation"
+  }

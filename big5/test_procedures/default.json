@@ -17,4 +17,16 @@
     {% endwith %}
     {{ benchmark.collect(parts="common/test-schedule.json") }}
   ]
+},
+{
+  "name": "subagg",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={
+      "index.search.concurrent_segment_search.enabled": "true"
+    }, index_name="big5" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="common/subagg-schedule.json") }}
+  ]
 }
