@@ -1,0 +1,53 @@
+{
+    "name": "append-no-conflicts",
+    "description": "Indexes the whole document corpus using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only. After that a couple of queries are run.",
+    "default": true,
+    "schedule": [
+      {
+        "operation": "delete-index"
+      },
+      {
+        "operation": {
+          "operation-type": "create-index",
+          "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
+            "index.codec": "best_compression",
+            "index.refresh_interval": "30s",
+            "index.translog.flush_threshold_size": "4g"
+          }{%- endif %}
+        }
+      },
+      {
+        "parallel": {
+          "tasks": [
+            {% for i in range(9) %}
+            {
+              "name": "bulk_{{i}}",
+              "operation": {
+                "operation-type": "bulk",
+                "indices": "perf_test2_{{i}}",
+                "bulk-size": 5,
+                "ingest-percentage": 100,
+                "routing": "1"
+              },
+              "warmup-time-period": 0,
+              "clients": 20
+            },
+            {% endfor %}
+            {
+              "name": "bulk_end",
+              "operation": {
+                "operation-type": "bulk",
+                "indices": "perf_test2_end",
+                "bulk-size": 5,
+                "ingest-percentage": 100,
+                "routing": "1"
+              },
+              "warmup-time-period": 0,
+              "clients": 20
+            }
+          ]
+        }
+      }
+    ]
+  }
+  

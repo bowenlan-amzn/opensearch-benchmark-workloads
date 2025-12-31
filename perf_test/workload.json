@@ -1,0 +1,50 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+  "description": "Perf test with Taxi rides in New York in 2015",
+  "indices": [
+    {% for i in range(9) %}
+    {
+      "name": "perf_test2_{{i}}",
+      "body": "index.json"
+    },
+    {% endfor %}
+    {
+      "name": "perf_test2_end",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "nyc_taxis",
+      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/nyc_taxis",
+      "documents": [
+        {% for i in range(9) %}
+        {
+          "target-index": "perf_test2_{{i}}",
+          "source-file": "documents.json.bz2",
+          "#COMMENT": "ML benchmark rely on the fact that the document count stays constant.",
+          "document-count": 165346692,
+          "compressed-bytes": 4820107188,
+          "uncompressed-bytes": 79802445255
+        },
+        {% endfor %}
+        {
+          "target-index": "perf_test2_end",
+          "source-file": "documents.json.bz2",
+          "#COMMENT": "ML benchmark rely on the fact that the document count stays constant.",
+          "document-count": 165346692,
+          "compressed-bytes": 4820107188,
+          "uncompressed-bytes": 79802445255
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
